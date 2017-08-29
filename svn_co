@@ -1,0 +1,6 @@
+#! /bin/sh
+set -exo nounset
+
+test x$URL != x
+
+$SCM co $URL $REPO

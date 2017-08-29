@@ -1,0 +1,37 @@
+#! /bin/sh
+set -exo nounset
+
+#$CIS/autogen-$AUTOGEN
+
+# TODO make a proper source release
+if test x$SRC != x$REPO ; then
+	rm $V -rf $SRC
+	cp $V -a $REPO $SRC
+	cd $SRC
+fi
+
+(test ! -f Makefile && test ! -f makefile) || \
+make distclean || \
+make clean
+#test ! -f configure || (./configure && make distclean)
+
+if test x$BLD != x$SRC ; then
+	rm $V -rf $BLD
+	mkdir $V $BLD
+	cd $BLD
+fi
+
+# see what config options there are
+#test -f $OPT.default || \
+#$SRC/configure --help | sed s/^/#/ | \
+#tee $OPT.default
+## set config options
+#test -f $OPT || \
+#(vi $OPT.default && cp $V $OPT{.default,})
+#test -f $OPT
+## finally...
+#$SRC/configure `grep -v ^# $OPT`
+
+make all
+
+$CIS/install-$CIS_INSTALL

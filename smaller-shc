@@ -1,0 +1,20 @@
+#! /bin/sh
+set -exo nounset
+
+rm $V -rf $INST-shc
+cp $V -a $INST{,-shc}
+for k in $INST-shc/{usr/{local/,},}{s,}bin ; do
+	test -d $k || continue
+	test x$DO_SHC_APPS != x0 || continue
+	for p in `find $k -type f` ; do
+		#test `grep -q 'POSIX shell script' $p` || continue
+		grep -q 'POSIX shell script' $p || continue
+		shc $V -i -cex -U -f $p
+		test -f $p.x || continue
+		mv $V $p{.x,}
+	done
+done
+pushd $INST-shc
+tar ${V}acpf $PKG-shc.txz -C $INST-shc .
+popd
+EXEC=-shc DATA=-data $CIS/test

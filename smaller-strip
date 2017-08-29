@@ -1,0 +1,22 @@
+#! /bin/sh
+set -exo nounset
+
+rm $V -rf $INST-strip
+cp $V -a $INST-{shc,strip}
+for k in $INST-strip/{usr/{local/,},}{s,}bin ; do
+	test -d $k || continue
+	test x$DO_STRIP_APPS != x0 || continue
+	find $k -type f \
+		-exec $STRIP --strip-all '{}' + || :
+done
+for k in $INST-strip/{usr/{local/,},}lib{,64} ; do
+	test -d $k || continue
+	test x$DO_STRIP_LIBS != x0 || continue
+	# TODO --strip-all lib<name>.a
+	find $k -type f \
+		-exec $STRIP --strip-unneeded '{}' + || :
+done
+pushd $INST-strip
+tar ${V}acpf $PKG-strip.txz -C $INST-strip .
+popd
+EXEC=-strip DATA=-data $CIS/test

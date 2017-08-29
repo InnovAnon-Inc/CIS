@@ -1,0 +1,6 @@
+#! /bin/sh
+set -exo nounset
+
+VARNAME=URL
+URL=`(cd $REPO && $SCM info) | grep ^$VARNAME: | sed s/^$VARNAME:\ //` \
+$CIS/scm-2_cnf

@@ -1,0 +1,5 @@
+#! /bin/sh
+set -exo nounset
+
+PATH=$TEST_PATH:$PATH which $PROJECT
+PATH=$TEST_PATH             $PROJECT --version

@@ -1,0 +1,8 @@
+#! /bin/sh
+set -exo nounset
+
+test x$VARNAME != x
+test x$CNFNAME != x
+
+URL=`grep -o "$VARNAME *= *.*$PROJECT.*" $CNFNAME | sed "s/^$VARNAME *= *//"` \
+$CIS/scm-2_cnf

@@ -1,0 +1,9 @@
+#! /bin/sh
+set -exo nounset
+
+rm $V -rf $INST
+make DESTDIR=$INST install
+#test -d $INST || continue
+pushd $INST
+tar ${V}acpf $PKG.txz -C $INST .
+popd

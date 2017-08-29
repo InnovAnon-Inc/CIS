@@ -1,0 +1,26 @@
+#! /bin/sh
+set -exo nounset
+
+#for k in autogen {,.}bootstrap autoreconf none ; do
+#	$CIS/autogen-$k.sh || continue
+#	echo AUTOGEN=$k >> $CNF
+#	exit 0
+#done
+
+if test -f autogen.sh ; then
+	AUTOGEN=autogen
+elif test -f bootstrap ; then
+	AUTOGEN=bootstrap
+elif test -f .bootstrap ; then
+	AUTOGEN=.bootstrap
+elif test -f bootstrap.sh ; then
+	AUTOGEN=bootstrap.sh
+elif test -f configure.ac || test -f configure.in ; then
+	AUTOGEN=autoreconf
+else
+	AUTOGEN=none
+fi
+echo AUTOGEN=$AUTOGEN >> $CNF
+export AUTOGEN
+
+$CIS/autogen-$AUTOGEN

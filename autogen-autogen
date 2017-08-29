@@ -1,0 +1,3 @@
+#! /bin/sh
+set -exo nounset
+./autogen.sh

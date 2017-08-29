@@ -1,0 +1,11 @@
+#! /bin/sh
+set -exo nounset
+
+test x$URL != x
+
+#test ! `grep -q ^URL= $CNF` || exit 0
+if `grep -q ^URL= $CNF` ; then
+	exit 0
+fi
+
+echo URL=$URL >> $CNF

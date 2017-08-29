@@ -1,0 +1,8 @@
+#! /bin/sh
+set -exo nounset
+
+$SCM revert -R .
+#$SCM st -q | awk '{print $2}' | xargs $SCM revert
+$SCM status --no-ignore | grep -E '(^\?)|(^\I)' | sed 's/^. *//' | \
+sed 's/\(.*\)/"\1"/' | xargs rm -rf
+$SCM up --force

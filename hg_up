@@ -1,0 +1,5 @@
+#! /bin/sh
+set -exo nounset
+
+#$SCM revert -r-$REV .
+echo TODO \;\)

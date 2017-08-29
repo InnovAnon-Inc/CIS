@@ -1,0 +1,20 @@
+#! /bin/sh
+set -exo nounset
+
+DIR=`mktemp -d`
+trap "rm $V -rf $DIR" 0
+
+for k in "$EXEC" $DATA ; do
+	test -f $PKG$k.txz || continue
+	tar ${V}xpf $PKG$k.txz -C $DIR
+done
+
+TEST_PATH=
+for k in {usr/{local/,},}{s,}bin ; do
+	test -d $DIR/$k || continue
+	TEST_PATH=$DIR/$k:$TEST_PATH
+done
+test x$TEST_PATH != x
+export TEST_PATH
+
+$CIS/test-$TEST

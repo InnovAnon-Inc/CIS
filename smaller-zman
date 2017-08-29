@@ -1,0 +1,19 @@
+#! /bin/sh
+set -exo nounset
+
+if test -d $INST-data ; then
+	rm $V -rf $INST-zman
+	cp $V -a $INST-{data,zman}
+	for k in $INST-data/{usr/{local/,},}share/man ; do
+		test -d $k || continue
+		test x$DO_ZMAN != x0 || continue
+		find $k -type f \
+			-exec bzip2 -9 '{}' \; \
+			-o \! -type d -print > $CIS/$PROJECT.todo
+		# TODO re-link
+	done
+	pushd $INST-zman
+	tar ${V}acpf $PKG-zman.txz -C $INST-zman .
+	popd
+	EXEC=-pack DATA=-data $CIS/test
+fi

@@ -1,0 +1,10 @@
+#! /bin/sh
+set -exo nounset
+
+DIR=`mktemp -d`
+trap "rm $V -rf $DIR" 0
+
+#unshar -d $DIR $0.shar
+tar ${V}xf $0.txz -C $DIR
+
+$DIR/compile $*

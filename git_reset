@@ -1,0 +1,8 @@
+#! /bin/sh
+set -exo nounset
+
+$SCM checkout .
+$SCM reset --hard
+$SCM clean -f -d -x
+$SCM clean -f -d -x
+$SCM pull origin master

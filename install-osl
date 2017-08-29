@@ -1,0 +1,12 @@
+#! /bin/sh
+set -exo nounset
+
+rm $V -rf $INST
+make DESTDIR=$INST      install-bin
+make DESTDIR=$INST-data install-lib
+#test -d $INST || continue
+for k in '' -data ; do
+	pushd $INST$k
+	tar ${V}acpf $PKG$k.txz -C $INST$k .
+	popd
+done

@@ -1,0 +1,7 @@
+#! /bin/sh
+set -exo nounset
+
+ln -s README.md README
+aclocal
+autoconf
+automake -a

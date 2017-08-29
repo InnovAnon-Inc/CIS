@@ -1,0 +1,5 @@
+#! /bin/sh
+set -exo nounset
+
+URL=-d`cat $REPO/$SCM/Root` \
+$CIS/scm-2_cnf

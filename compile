@@ -1,0 +1,212 @@
+#! /bin/sh
+set -exo nounset
+
+test ! -z ${CIS+x} || CIS=`dirname $(readlink -f $0)`
+export CIS
+
+test $# -eq 1
+PROJECT=$1
+export PROJECT
+
+test ! -z ${DEV+x} || DEV=$DEV
+export DEV
+
+test ! -z ${REPOS+x} || REPOS=/mnt/$DEV/repos
+test ! -z ${SRCS+x}  || SRCS=/mnt/$DEV/sources
+test ! -z ${BLDS+x}  || BLDS=/mnt/$DEV/build
+test ! -z ${INSTS+x} || INSTS=/mnt/$DEV/installs
+test ! -z ${PKGS+x}  || PKGS=/mnt/$DEV/pkgs
+test ! -z ${CNFS+x}  || CNFS=/mnt/$DEV/cnfs
+test ! -z ${OPTS+x}  || OPTS=/mnt/$DEV/opts
+test ! -z ${OUTS+x}  || OUTS=/mnt/$DEV/outs
+export REPOS SRCS BLDS INSTS PKGS CNFS OPTS OUTS
+
+test ! -z ${V+x} || V=-v
+export V
+
+for k in $REPOS $SRCS $BLDS $INSTS $PKGS $CNFS $OPTS $OUTS ; do
+	test -d $k || mkdir $V -p $k
+done
+
+test ! -z ${REPO+x} || REPO=$REPOS/$PROJECT
+#test ! -z ${SRC+x}  || SRC=$SRCS/$PROJECT
+test ! -z ${BLD+x}  || BLD=$BLDS/$PROJECT
+test ! -z ${INST+x} || INST=$INSTS/$PROJECT
+test ! -z ${PKG+x}  || PKG=$PKGS/$PROJECT
+test ! -z ${CNF+x}  || CNF=$CNFS/$PROJECT
+test ! -z ${OPT+x}  || OPT=$OPTS/$PROJECT
+test ! -z ${OUT+x}  || OUT=$OUTS/$PROJECT
+export CNF OUT
+
+test ! -z ${CC+x}     || CC=musl-gcc
+test ! -z ${CXX+x}    || CXX=
+test ! -z ${STRIP+x}  || STRIP=strip
+test ! -z ${AR+x}     || AR=
+test ! -z ${RANLIB+x} || RANLIB=
+test ! -z ${AS+x}     || AS=
+test ! -z ${LD+x}     || LD=
+test ! -z ${NM+x}     || NM=
+export CC CXX STRIP AR RANLIB AS LD NM
+
+if test -z ${CFLAGS+x} ; then
+	CFLAGS=
+	CFLAGS="$CFLAGS -march=native"
+	CFLAGS="$CFLAGS -g0"
+	CFLAGS="$CFLAGS -O2"
+	CFLAGS="$CFLAGS -pipe"
+	CFLAGS="$CFLAGS -fmerge-all-constants"
+	CFLAGS="$CFLAGS -fomit-frame-pointer"
+fi
+if test -z ${CXXFLAGS+x} ; then
+	CXXFLAGS=
+	CXXFLAGS="$CFLAGS $CXXFLAGS"
+fi
+if test -z ${LDFLAGS+x} ; then
+	LDFLAGS=
+fi
+if test -z ${FFLAGS+x} ; then
+	FFLAGS=
+fi
+export CFLAGS CXXFLAGS LDFLAGS FFLAGS
+
+test ! -z ${BUILD_CPU+x}     || BUILD_CPU=`uname -m`
+test ! -z ${BUILD_COMPANY+x} || BUILD_COMPANY=puppy
+test ! -z ${BUILD_KERNEL+x}  || BUILD_KERNEL=linux
+test ! -z ${BUILD_OS+x}      || BUILD_OS=gnu
+test ! -z ${BUILD_SYSTEM+x}  || \
+BUILD_SYSTEM=$BUILD_KERNEL-$BUILD_OS
+test ! -z ${BUILD_TYPE+x}    || \
+BUILD_TYPE=$BUILD_CPU-$BUILD_COMPANY-$BUILD_SYSTEM
+
+export BUILD_CPU BUILD_COMPANY BUILD_KERNEL BUILD_OS
+export BUILD_SYSTEM BUILD_TYPE
+
+#HOST_CPU=x86_64
+#HOST_COMPANY=innovanon
+#HOST_KERNEL=linux
+#HOST_OS=gnu
+#HOST_SYSTEM=$HOST_KERNEL-$HOST_OS
+#HOST_TYPE=$HOST_CPU-$HOST_COMPANY-$HOST_SYSTEM
+
+test ! -z ${HOST_CPU+x}     || HOST_CPU=$BUILD_CPU
+test ! -z ${HOST_COMPANY+x} || HOST_COMPANY=$BUILD_COMPANY
+test ! -z ${HOST_KERNEL+x}  || HOST_KERNEL=$BUILD_KERNEL
+test ! -z ${HOST_OS+x}      || HOST_OS=$BUILD_OS
+#test ! -z ${HOST_SYSTEM+x}  || HOST_SYSTEM=$BUILD_SYSTEM
+if test -z ${HOST_SYSTEM+x} ; then
+	if test $HOST_CPU     == $BUILD_CPU \
+	&& test $HOST_COMPANY == $BUILD_COMPANY \
+	&& test $HOST_KERNEL  == $BUILD_KERNEL \
+	&& test $HOST_OS      == $BUILD_OS ; then
+		HOST_SYSTEM=$BUILD_SYSTEM
+	else
+		HOST_SYSTEM=$HOST_KERNEL-$HOST_OS
+	fi
+fi
+#test ! -z ${HOST_TYPE+x}    || HOST_TYPE=$BUILD_TYPE
+if test -z ${HOST_TYPE+x} ; then
+	if test $HOST_CPU     == $BUILD_CPU \
+	&& test $HOST_COMPANY == $BUILD_COMPANY \
+	&& test $HOST_KERNEL  == $BUILD_KERNEL \
+	&& test $HOST_OS      == $BUILD_OS ; then
+		HOST_TYPE=$BUILD_TYPE
+	else
+		HOST_TYPE=$HOST_CPU-$HOST_COMPANY-$HOST_SYSTEM
+	fi
+fi
+
+export HOST_CPU HOST_COMPANY HOST_KERNEL HOST_OS
+export HOST_SYSTEM HOST_TYPE
+
+test ! -z ${TARGET_CPU+x}     || TARGET_CPU=$HOST_CPU
+test ! -z ${TARGET_COMPANY+x} || TARGET_COMPANY=$HOST_COMPANY
+test ! -z ${TARGET_KERNEL+x}  || TARGET_KERNEL=$HOST_KERNEL
+test ! -z ${TARGET_OS+x}      || TARGET_OS=$HOST_OS
+#test ! -z ${TARGET_SYSTEM+x}  || TARGET_SYSTEM=$HOST_SYSTEM
+if test -z ${TARGET_SYSTEM+x} ; then
+	if test $TARGET_CPU     == $HOST_CPU \
+	&& test $TARGET_COMPANY == $HOST_COMPANY \
+	&& test $TARGET_KERNEL  == $HOST_KERNEL \
+	&& test $TARGET_OS      == $HOST_OS ; then
+		TARGET_SYSTEM=$HOST_SYSTEM
+	else
+		TARGET_SYSTEM=$TARGET_KERNEL-$TARGET_OS
+	fi
+fi
+#test ! -z ${TARGET_TYPE+x}    || TARGET_TYPE=$HOST_TYPE
+if test -z ${TARGET_TYPE+x} ; then
+	if test $TARGET_CPU     == $HOST_CPU \
+	&& test $TARGET_COMPANY == $HOST_COMPANY \
+	&& test $TARGET_KERNEL  == $HOST_KERNEL \
+	&& test $TARGET_OS      == $HOST_OS ; then
+		TARGET_TYPE=$HOST_TYPE
+	else
+		TARGET_TYPE=$TARGET_CPU-$TARGET_COMPANY-$TARGET_SYSTEM
+	fi
+fi
+
+export TARGET_CPU TARGET_COMPANY TARGET_KERNEL TARGET_OS
+export TARGET_SYSTEM TARGET_TYPE
+
+test ! -z ${SRC+x}     || SRC=$REPO
+test ! -z ${SCM+x}     || SCM=git
+test ! -z ${AUTOGEN+x} || AUTOGEN=tryall
+test ! -z ${TEST+x}    || TEST=standard
+test ! -z ${COMPILE+x} || COMPILE=simple
+test ! -z ${CIS_INSTALL+x} || CIS_INSTALL=autotools
+
+test ! -z ${DO_SHC_APPS+x}   || DO_SHC_APPS=1
+test ! -z ${DO_STRIP_APPS+x} || DO_STRIP_APPS=1
+test ! -z ${DO_STRIP_LIBS+x} || DO_STRIP_LIBS=1
+test ! -z ${DO_PACK+x}       || DO_PACK=1
+test ! -z ${DO_ZMAN+x}       || DO_ZMAN=1
+export DO_SHC_APPS DO_STRIP_APPS DO_STRIP_LIBS DO_PACK DO_ZMAN
+
+(
+test ! -f $CNF || . $CNF
+export REPO SRC BLD INST PKG OPT
+export SCM AUTOGEN TEST URL COMPILE CIS_INSTALL
+
+if test ! -d $REPO ; then
+	$CIS/${SCM}_co
+else
+	$CIS/${SCM}_cnf
+fi
+#test -d $REPO || $CIS/${SCM}_co
+
+REV=0
+MAX_REV=0
+while : ; do
+	export REV
+	if (
+		set -exo nounset
+		export AUTOGEN=tryall
+		cd $REPO
+
+		$CIS/${SCM}_reset
+		$CIS/${SCM}_up
+
+		$CIS/compile-$COMPILE
+	) ; then break
+	else
+		REV=`expr $REV + 1`
+		test $REV -le $MAX_REV
+	fi
+done
+
+for k in '' -data ; do
+	test -d $INST$k || continue
+	pushd $INST$k
+	tar ${V}acpf $PKG$k.txz -C $INST$k .
+	popd
+done
+EXEC= DATA=-data $CIS/test
+
+# order matters
+for k in shc strip pack zman ; do
+	# TODO "|| :" ==> scares me
+	$CIS/smaller-$k || :
+done
+
+$CIS/host-install
+) |& tee $OUT

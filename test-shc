@@ -1,0 +1,19 @@
+#! /bin/sh
+set -exo nounset
+
+PATH=$TEST_PATH:$PATH which $PROJECT
+
+#TEMP=`mktemp`
+#trap "rm -f $TEMP" 0
+#cat > $TEMP <<- "EOF"
+#	#! /bin/sh
+#	set -exo nounset
+#	echo Hello, World\!
+#EOF
+#PATH=$TEST_PATH $PROJECT $V -f $TEMP
+
+PATH=$TEST_PATH $PROJECT -h
+
+# TODO make tmpdir and change there
+#shc -i "-cex" -v -U -f $TEMP
+#$TEMP

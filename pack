@@ -1,0 +1,16 @@
+#! /bin/sh
+set -exo nounset
+
+test $# -eq 1
+
+DIR=`mktemp -d`
+trap "rm $V -rf $DIR" 0
+
+for k in `find . -name \*.x` ; do
+	p=`echo $k | sed s/\.x$//`
+	test $p.x == $k
+	cp $V $k $DIR/$p
+done
+#shar $DIR > $1
+cd $DIR
+tar ${V}acf $1 -C $DIR .

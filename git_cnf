@@ -1,0 +1,6 @@
+#! /bin/sh
+set -exo nounset
+
+VARNAME=url \
+CNFNAME=$REPO/.$SCM/config \
+$CIS/scm_cnf

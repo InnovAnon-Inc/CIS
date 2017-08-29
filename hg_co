@@ -1,0 +1,7 @@
+#! /bin/sh
+set -exo nounset
+
+test x$URL != x
+
+cd `dirname $REPO`
+$SCM clone $URL `basename $REPO`

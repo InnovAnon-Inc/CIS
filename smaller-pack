@@ -1,0 +1,15 @@
+#! /bin/sh
+set -exo nounset
+
+rm $V -rf $INST-pack
+cp $V -a $INST-{strip,pack}
+for k in $INST-strip/{usr/{local/,},}{s,}bin ; do
+	test -d $k || continue
+	test x$DO_PACK != x0 || continue
+	find $k -type f \
+		-exec upx-ucl --all-filters --ultra-brute '{}' \; || :
+done
+pushd $INST-pack
+tar ${V}acpf $PKG-pack.txz -C $INST-pack .
+popd
+EXEC=-pack DATA=-data $CIS/test
