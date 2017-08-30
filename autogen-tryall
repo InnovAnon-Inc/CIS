@@ -20,6 +20,9 @@ elif test -f configure.ac || test -f configure.in ; then
 else
 	AUTOGEN=none
 fi
+grep "^AUTOGEN=" $CNF | \
+tail -n 1 | \
+grep -q "^AUTOGEN=$AUTOGEN" || \
 echo AUTOGEN=$AUTOGEN >> $CNF
 export AUTOGEN
 

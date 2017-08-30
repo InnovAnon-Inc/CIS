@@ -38,4 +38,4 @@ DEV=home compile restart
 
 BUGS
 
-regression in config file auto-updating
+(currently being discovered ;))
