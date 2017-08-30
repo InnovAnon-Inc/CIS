@@ -165,6 +165,7 @@ export DO_SHC_APPS DO_STRIP_APPS DO_STRIP_LIBS DO_PACK DO_ZMAN
 (
 test ! -f $CNF || . $CNF
 export REPO SRC BLD INST PKG OPT
+test ! -z ${URL+x} || URL=$SCM://github.com/InnovAnon-Inc/$REPO.$SCM
 export SCM AUTOGEN TEST URL COMPILE CIS_INSTALL
 
 if test ! -d $REPO ; then
