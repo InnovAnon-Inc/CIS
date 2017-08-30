@@ -5,7 +5,7 @@ V?=-v
 
 .PHONY: all install clean
 
-SRCS=$(filter-out Makefile, $(wildcard *))
+SRCS=$(filter-out Makefile README.md LICENSE, $(wildcard *))
 
 all: $(SRCS:=.x) unpack.txz
 	@echo Success! :\)
@@ -15,6 +15,7 @@ unpack.txz: $(SRCS:=.x)
 %.x: %
 	shc $V -i -cex -U -f $^
 	strip --strip-all $@
+	test ! `command -v upx-ucl` || \
 	upx-ucl --all-filters --ultra-brute $@
 
 #install: $(DESTDIR)/$(PREFIX)/$(BINDIR)
