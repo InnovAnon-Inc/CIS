@@ -38,7 +38,7 @@ test ! -z ${OPT+x}  || OPT=$OPTS/$PROJECT
 test ! -z ${OUT+x}  || OUT=$OUTS/$PROJECT
 export CNF OUT
 
-test ! -z ${CC+x}     || CC=musl-gcc
+#test ! -z ${CC+x}     || CC=musl-gcc
 test ! -z ${CXX+x}    || CXX=
 test ! -z ${STRIP+x}  || STRIP=strip
 test ! -z ${AR+x}     || AR=
