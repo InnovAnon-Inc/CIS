@@ -1,7 +1,7 @@
 #! /bin/bash
 set -exo nounset
 
-#$CIS/autogen-$AUTOGEN
+$CIS/autogen-$AUTOGEN
 
 # TODO make a proper source release
 if test x$SRC != x$REPO ; then
