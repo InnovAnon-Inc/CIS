@@ -9,7 +9,14 @@ PROJECT=$1
 export PROJECT
 
 #test ! -z ${DEV+x} || DEV=$DEV
-test ! -z ${DEV+x} || DEV=cis
+#test ! -z ${DEV+x} || DEV=cis
+if test -z ${DEV+x} ; then
+	if test -z ${TARGET_TYPE+x} ; then
+		DEV=cis
+	else
+		DEV=$TARGET_TYPE
+	fi
+fi
 export DEV
 
 test ! -z ${REPOS+x} || REPOS=/mnt/$DEV/repos
