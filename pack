@@ -8,7 +8,7 @@ trap "rm $V -rf $DIR" 0
 
 for k in `find . -name \*.x` ; do
 	p=`echo $k | sed s/\.x$//`
-	test $p.x == $k
+	test $p.x = $k
 	cp $V $k $DIR/$p
 done
 #shar $DIR > $1

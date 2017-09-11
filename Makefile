@@ -31,4 +31,5 @@ uninstall:
 	rm $V -f $(DESTDIR)/$(PREFIX)/$(BINDIR)/compile
 
 clean:
-	rm $V -f *.x{,.c} unpack.txz
+	rm $V -f *.x *.x.c unpack.txz
+	#rm $V -f *.x{,.c} unpack.txz
