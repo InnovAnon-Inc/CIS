@@ -155,6 +155,7 @@ test ! -z ${AUTOGEN+x} || AUTOGEN=tryall
 test ! -z ${TEST+x}    || TEST=standard
 test ! -z ${COMPILE+x} || COMPILE=simple
 test ! -z ${CIS_INSTALL+x} || CIS_INSTALL=autotools
+test ! -z ${HOST_INSTALL+x} || HOST_INSTALL=rootfs
 
 test ! -z ${DO_SHC_APPS+x}   || DO_SHC_APPS=1
 test ! -z ${DO_STRIP_APPS+x} || DO_STRIP_APPS=1
@@ -210,5 +211,6 @@ for k in shc strip pack zman ; do
 	$CIS/smaller-$k || :
 done
 
-$CIS/host-install
+#$CIS/host-install
+$CIS/host-install-$HOST_INSTALL
 ) |& tee $OUT
