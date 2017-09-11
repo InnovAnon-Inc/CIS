@@ -40,6 +40,7 @@ test ! -z ${OUT+x}  || OUT=$OUTS/$PROJECT
 export CNF OUT
 
 test ! -z ${CIS_CC+x}     || CIS_CC=musl-gcc
+test ! -z ${CIS_CPP+x}    || CIS_CPP=
 test ! -z ${CIS_CXX+x}    || CIS_CXX=
 test ! -z ${CIS_STRIP+x}  || CIS_STRIP=strip
 test ! -z ${CIS_AR+x}     || CIS_AR=
@@ -47,7 +48,7 @@ test ! -z ${CIS_RANLIB+x} || CIS_RANLIB=
 test ! -z ${CIS_AS+x}     || CIS_AS=
 test ! -z ${CIS_LD+x}     || CIS_LD=
 test ! -z ${CIS_NM+x}     || CIS_NM=
-export CIS_CC CIS_CXX CIS_STRIP CIS_AR CIS_RANLIB CIS_AS CIS_LD CIS_NM
+export CIS_CC CIS_CPP CIS_CXX CIS_STRIP CIS_AR CIS_RANLIB CIS_AS CIS_LD CIS_NM
 
 if test -z ${CFLAGS+x} ; then
 	CFLAGS=
@@ -57,6 +58,10 @@ if test -z ${CFLAGS+x} ; then
 	CFLAGS="$CFLAGS -pipe"
 	CFLAGS="$CFLAGS -fmerge-all-constants"
 	CFLAGS="$CFLAGS -fomit-frame-pointer"
+fi
+if test -z ${CPPFLAGS+x} ; then
+	CPPFLAGS=
+	CPPFLAGS="$CPPFLAGS $CFLAGS"
 fi
 if test -z ${CXXFLAGS+x} ; then
 	CXXFLAGS=
@@ -68,7 +73,7 @@ fi
 if test -z ${FFLAGS+x} ; then
 	FFLAGS=
 fi
-export CFLAGS CXXFLAGS LDFLAGS FFLAGS
+export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS FFLAGS
 
 test ! -z ${BUILD_CPU+x}     || BUILD_CPU=`uname -m`
 test ! -z ${BUILD_COMPANY+x} || BUILD_COMPANY=puppy
