@@ -39,6 +39,7 @@ if test -f $SRC/configure ; then
 	(vi $OPT.default && cp $V $OPT{.default,})
 	test -f $OPT
 	# finally...
+	$CONFIGURE_ENV \
 	$SRC/configure --prefix=$PREFIX $CONFIGURE_FLAGS `grep -v ^# $OPT`
 
 	make
