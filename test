@@ -15,9 +15,14 @@ for k in {usr/{local/,},}{s,}bin ; do
 	TEST_PATH=$DIR/$k:$TEST_PATH
 done
 
-test x$TEST_PATH != x || \
-test x$TEST == xnone && \
-TEST_PATH=
+if test x$TEST_PATH == x ; then
+	if test x$TEST == xnone ; then
+		TEST_PATH=
+	fi
+fi
+#test x$TEST_PATH != x || \
+#test x$TEST == xnone && \
+#TEST_PATH=
 export TEST_PATH
 
 $CIS/test-$TEST

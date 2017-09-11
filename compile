@@ -165,6 +165,8 @@ test ! -z ${DO_PACK+x}       || DO_PACK=1
 test ! -z ${DO_ZMAN+x}       || DO_ZMAN=1
 export DO_SHC_APPS DO_STRIP_APPS DO_STRIP_LIBS DO_PACK DO_ZMAN
 
+test ! -z ${PREFIX+x} || PREFIX=/
+
 (
 test ! -f $CNF || . $CNF
 export REPO SRC BLD INST PKG OPT
