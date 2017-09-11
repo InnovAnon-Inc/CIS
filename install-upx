@@ -1,0 +1,14 @@
+#! /bin/bash
+set -exo nounset
+
+rm $V -rf $INST
+test -d $INST || \
+mkdir $V $INST
+test -d $INST/bin || \
+mkdir $V $INST/bin
+ln `readlink -f src/upx.out` $INST/bin/upx-ucl
+#make DESTDIR=$INST install
+#test -d $INST || continue
+pushd $INST
+tar ${V}acpf $PKG.txz -C $INST .
+popd

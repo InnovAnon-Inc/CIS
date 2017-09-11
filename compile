@@ -39,15 +39,16 @@ test ! -z ${OPT+x}  || OPT=$OPTS/$PROJECT
 test ! -z ${OUT+x}  || OUT=$OUTS/$PROJECT
 export CNF OUT
 
+# TODO
 #test ! -z ${CC+x}     || CC=musl-gcc
-test ! -z ${CXX+x}    || CXX=
-test ! -z ${STRIP+x}  || STRIP=strip
-test ! -z ${AR+x}     || AR=
-test ! -z ${RANLIB+x} || RANLIB=
-test ! -z ${AS+x}     || AS=
-test ! -z ${LD+x}     || LD=
-test ! -z ${NM+x}     || NM=
-export CC CXX STRIP AR RANLIB AS LD NM
+#test ! -z ${CXX+x}    || CXX=
+#test ! -z ${STRIP+x}  || STRIP=strip
+#test ! -z ${AR+x}     || AR=
+#test ! -z ${RANLIB+x} || RANLIB=
+#test ! -z ${AS+x}     || AS=
+#test ! -z ${LD+x}     || LD=
+#test ! -z ${NM+x}     || NM=
+#export CC CXX STRIP AR RANLIB AS LD NM
 
 if test -z ${CFLAGS+x} ; then
 	CFLAGS=
