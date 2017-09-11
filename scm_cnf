@@ -4,5 +4,5 @@ set -exo nounset
 test x$VARNAME != x
 test x$CNFNAME != x
 
-URL=`grep -o "$VARNAME *= *.*$PROJECT.*" $CNFNAME | sed "s/^$VARNAME *= *//"` \
+URL=`grep -o "$VARNAME *= *.*$PROJECT.*" $CNFNAME | sed "s/^$VARNAME *= *//" | head -n 1` \
 $CIS/scm-2_cnf
