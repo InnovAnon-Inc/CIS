@@ -8,7 +8,8 @@ test $# -eq 1
 PROJECT=$1
 export PROJECT
 
-test ! -z ${DEV+x} || DEV=$DEV
+#test ! -z ${DEV+x} || DEV=$DEV
+test ! -z ${DEV+x} || DEV=cis
 export DEV
 
 test ! -z ${REPOS+x} || REPOS=/mnt/$DEV/repos
