@@ -3,5 +3,7 @@ set -exo nounset
 
 test x$URL != x
 
+$SCM clone --recursive $URL $REPO || \
 $SCM clone $URL $REPO
-#$SCM submodule update --init --recursive
+#$SCM submodule update --init --recursive || :
+
