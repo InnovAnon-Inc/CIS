@@ -7,14 +7,14 @@ for k in $INST-strip/{usr/{local/,},}{s,}bin ; do
 	test -d $k || continue
 	test x$DO_STRIP_APPS != x0 || continue
 	find $k -type f \
-		-exec $STRIP --strip-all '{}' + || :
+		-exec $CIS_STRIP --strip-all '{}' + || :
 done
 for k in $INST-strip/{usr/{local/,},}lib{,64} ; do
 	test -d $k || continue
 	test x$DO_STRIP_LIBS != x0 || continue
 	# TODO --strip-all lib<name>.a
 	find $k -type f \
-		-exec $STRIP --strip-unneeded '{}' + || :
+		-exec $CIS_STRIP --strip-unneeded '{}' + || :
 done
 pushd $INST-strip
 tar ${V}acpf $PKG-strip.txz -C $INST-strip .

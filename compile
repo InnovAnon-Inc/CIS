@@ -39,17 +39,15 @@ test ! -z ${OPT+x}  || OPT=$OPTS/$PROJECT
 test ! -z ${OUT+x}  || OUT=$OUTS/$PROJECT
 export CNF OUT
 
-# TODO
-#test ! -z ${CC+x}     || CC=musl-gcc
-#test ! -z ${CXX+x}    || CXX=
-test ! -z ${STRIP+x}  || STRIP=strip
-#test ! -z ${AR+x}     || AR=
-#test ! -z ${RANLIB+x} || RANLIB=
-#test ! -z ${AS+x}     || AS=
-#test ! -z ${LD+x}     || LD=
-#test ! -z ${NM+x}     || NM=
-#export CC CXX STRIP AR RANLIB AS LD NM
-export STRIP
+test ! -z ${CIS_CC+x}     || CIS_CC=musl-gcc
+test ! -z ${CIS_CXX+x}    || CIS_CXX=
+test ! -z ${CIS_STRIP+x}  || CIS_STRIP=strip
+test ! -z ${CIS_AR+x}     || CIS_AR=
+test ! -z ${CIS_RANLIB+x} || CIS_RANLIB=
+test ! -z ${CIS_AS+x}     || CIS_AS=
+test ! -z ${CIS_LD+x}     || CIS_LD=
+test ! -z ${CIS_NM+x}     || CIS_NM=
+export CIS_CC CIS_CXX CIS_STRIP CIS_AR CIS_RANLIB CIS_AS CIS_LD CIS_NM
 
 if test -z ${CFLAGS+x} ; then
 	CFLAGS=
@@ -150,6 +148,42 @@ fi
 
 export TARGET_CPU TARGET_COMPANY TARGET_KERNEL TARGET_OS
 export TARGET_SYSTEM TARGET_TYPE
+
+if test "x$TARGET_TYPE" != "x$HOST_TYPE" ; then
+	CIS_CC=$TARGET_TYPE-gcc
+	CIS_CPP=$TARGET_TYPE-cpp
+	CIS_CXX=$TARGET_TYPE-g++
+	CIS_STRIP=$TARGET_TYPE-strip
+	CIS_AR=$TARGET_TYPE-ar
+	CIS_RANLIB=$TARGET_TYPE-ranlib
+	CIS_AS=$TARGET_TYPE-as
+	CIS_LD=$TARGET_TYPE-ld
+	CIS_NM=$TARGET_TYPE-nm
+	export CIS_CC CIS_CPP CIS_CXX CIS_STRIP CIS_AR CIS_RANLIB CIS_AS CIS_LD CIS_NM
+	CC=$CIS_CC
+	CPP=$CIS_CPP
+	CXX=$CIS_CXX
+	STRIP=$CIS_STRIP
+	AR=$CIS_AR
+	RANLIB=$CIS_RANLIB
+	AS=$CIS_AS
+	LD=$CIS_LD
+	NM=$CIS_NM
+	export CC CPP CXX STRIP AR RANLIB AS LD NM
+	CPPFLAGS="-I/opt/cross/$TARGET_TYPE/include --sysroot=/opt/cross/$TARGET_TYPE $CPPFLAGS"
+	CFLAGS="-I/opt/cross/$TARGET_TYPE/include --sysroot=/opt/cross/$TARGET_TYPE $CFLAGS"
+	LDFLAGS="-L/opt/cross/$TARGET_TYPE/lib --sysroot=/opt/cross/$TARGET_TYPE $LDFLAGS"
+	PREFIX=/opt/cross/$TARGET_TYPE
+	export CPPFLAGS CFLAGS LDFLAGS PREFIX
+
+	CONFIGURE_FLAGS="--prefix=$PREFIX --host=$TARGET_TYPE --with-sysroot=$PREFIX"
+	export CONFIGURE_FLAGS
+	
+	HOST_INSTALL=cross
+	export HOST_INSTALL
+else
+	export CONFIGURE_FLAGS=
+fi
 
 test ! -z ${SRC+x}     || SRC=$REPO
 test ! -z ${SCM+x}     || SCM=git
