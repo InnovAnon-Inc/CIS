@@ -49,7 +49,7 @@ fi
 #		sed s/^#// Makefile > $OPT
 #		vi $OPT
 #	fi
-l#	make `grep -v ^# $OPT`
+#	make `grep -v ^# $OPT`
 #fi
 
 cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $SRC
