@@ -1,0 +1,58 @@
+#! /bin/bash
+set -exo nounset
+
+if test -f Makefile || test -f makefile ; then
+	make distclean || make clean
+fi
+if test -f configure ; then
+	./configure
+	make distclean || make clean
+fi
+
+#$CIS/autogen-$AUTOGEN
+
+# TODO make a proper source release
+if test x$SRC != x$REPO ; then
+	rm $V -rf $SRC
+	cp $V -a $REPO $SRC
+	cd $SRC
+fi
+
+#(test ! -f Makefile && test ! -f makefile) || \
+#make distclean || \
+#make clean
+#test ! -f configure || (./configure && make distclean)
+
+if test x$BLD != x$SRC ; then
+	rm $V -rf $BLD
+	mkdir $V $BLD
+	cd $BLD
+fi
+
+# see what config options there are
+#if test -f $SRC/configure ; then
+#	test -f $OPT.default || \
+#	$SRC/configure --help | sed s/^/#/ | \
+#	tee $OPT.default
+#	# set config options
+#	test -f $OPT || \
+#	(vi $OPT.default && cp $V $OPT{.default,})
+#	test -f $OPT
+#	# finally...
+#	#$CONFIGURE_ENV \
+#
+#	$SRC/configure --prefix=$PREFIX $CONFIGURE_FLAGS `grep -v ^# $OPT`
+#
+#	make
+#else
+#	if test ! -f $OPT ; then
+#		sed s/^#// Makefile > $OPT
+#		vi $OPT
+#	fi
+l#	make `grep -v ^# $OPT`
+#fi
+
+cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $SRC
+make
+
+$CIS/install-$CIS_INSTALL
