@@ -186,6 +186,7 @@ if test "x$TARGET_TYPE" != "x$HOST_TYPE" ; then
 	#CFLAGS="-I/opt/cross/$TARGET_TYPE/include --sysroot=/opt/cross/$TARGET_TYPE $CFLAGS"
 	#LDFLAGS="-L/opt/cross/$TARGET_TYPE/lib --sysroot=/opt/cross/$TARGET_TYPE $LDFLAGS"
 	#export PREFIX=/opt/cross/$TARGET_TYPE
+	export CIS_PREFIX=/opt/cross/$TARGET_TYPE
 	export PREFIX=/
 	#export CPPFLAGS CFLAGS LDFLAGS
 
@@ -217,6 +218,8 @@ export DO_SHC_APPS DO_STRIP_APPS DO_STRIP_LIBS DO_PACK DO_ZMAN
 
 test ! -z ${PREFIX+x} || PREFIX=/
 export PREFIX
+test ! -z ${CIS_PREFIX+x} || CIS_PREFIX=$PREFIX
+export CIS_PREFIX
 
 (
 test ! -f $CNF || . $CNF
