@@ -185,7 +185,8 @@ if test "x$TARGET_TYPE" != "x$HOST_TYPE" ; then
 	#CPPFLAGS="-I/opt/cross/$TARGET_TYPE/include --sysroot=/opt/cross/$TARGET_TYPE $CPPFLAGS"
 	#CFLAGS="-I/opt/cross/$TARGET_TYPE/include --sysroot=/opt/cross/$TARGET_TYPE $CFLAGS"
 	#LDFLAGS="-L/opt/cross/$TARGET_TYPE/lib --sysroot=/opt/cross/$TARGET_TYPE $LDFLAGS"
-	export PREFIX=/opt/cross/$TARGET_TYPE
+	#export PREFIX=/opt/cross/$TARGET_TYPE
+	export PREFIX=/
 	#export CPPFLAGS CFLAGS LDFLAGS
 
 	#CONFIGURE_FLAGS="--prefix=$PREFIX --host=$TARGET_TYPE --with-sysroot=$PREFIX"
