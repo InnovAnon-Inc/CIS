@@ -60,11 +60,11 @@ export CIS_CC CIS_CPP CIS_CXX CIS_STRIP CIS_AR CIS_RANLIB CIS_AS CIS_LD CIS_NM
 if test -z ${CFLAGS+x} ; then
 	CFLAGS=
 	#CFLAGS="$CFLAGS -march=native"
-	CFLAGS="$CFLAGS -g0"
-	CFLAGS="$CFLAGS -O2"
-	CFLAGS="$CFLAGS -pipe"
-	CFLAGS="$CFLAGS -fmerge-all-constants"
-	CFLAGS="$CFLAGS -fomit-frame-pointer"
+	#CFLAGS="$CFLAGS -g0"
+	#CFLAGS="$CFLAGS -O2"
+	#CFLAGS="$CFLAGS -pipe"
+	#CFLAGS="$CFLAGS -fmerge-all-constants"
+	#CFLAGS="$CFLAGS -fomit-frame-pointer"
 fi
 if test -z ${CPPFLAGS+x} ; then
 	CPPFLAGS=
