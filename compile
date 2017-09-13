@@ -221,6 +221,9 @@ export PREFIX
 test ! -z ${CIS_PREFIX+x} || CIS_PREFIX=$PREFIX
 export CIS_PREFIX
 
+test ! -z ${EXT+x} || EXT=.tar.xz
+export EXT
+
 (
 test ! -f $CNF || . $CNF
 export REPO SRC BLD INST PKG OPT
