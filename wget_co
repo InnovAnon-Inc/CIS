@@ -1,0 +1,8 @@
+#! /bin/bash
+set -exo nounset
+
+test x$URL != x
+
+$SCM --continue -O $REPO$EXT $URL
+rm -fr $REPO
+tar xf $REPOEXT -C $REPO
