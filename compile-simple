@@ -45,11 +45,16 @@ if test -f $SRC/configure ; then
 
 	make
 else
+	if test -f $SRC/Makefile ; then
+		MF=$SRC/Makefile
+	elif test -f $SRC/makefile ; then
+		MF=$SRC/makefile
+	fi	
 	if test ! -f $OPT ; then
-		sed s/^#// Makefile > $OPT
+		sed s/^#// $MF > $OPT
 		vi $OPT
 	fi
-	make `grep -v ^# $OPT`
+	make -f $MF `grep -v ^# $OPT`
 fi
 
 $CIS/install-$CIS_INSTALL
