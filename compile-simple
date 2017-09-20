@@ -29,10 +29,16 @@ if test x$BLD != x$SRC ; then
 	cd $BLD
 fi
 
+if   test -f $SRC/configure ; then CF=$SRC/configure
+elif test -f $SRC/config ; then CF=$SRC/config
+elif test -f $SRC/Config ; then CF=$SRC/Config
+fi
+
 # see what config options there are
-if test -f $SRC/configure ; then
+#if test -f $SRC/configure ; then
+if test ! -z {$CF+x} ; then
 	test -f $OPT.default || \
-	$SRC/configure --help | sed s/^/#/ | \
+	$CF --help | sed s/^/#/ | \
 	tee $OPT.default
 	# set config options
 	test -f $OPT || \
@@ -41,7 +47,7 @@ if test -f $SRC/configure ; then
 	# finally...
 	#$CONFIGURE_ENV \
 
-	$SRC/configure --prefix=$PREFIX $CONFIGURE_FLAGS `grep -v ^# $OPT`
+	$CF --prefix=$PREFIX $CONFIGURE_FLAGS `grep -v ^# $OPT`
 
 	make
 else
