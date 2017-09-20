@@ -52,7 +52,13 @@ fi
 #	make `grep -v ^# $OPT`
 #fi
 
-cmake -DCMAKE_INSTALL_PREFIX=$PREFIX $SRC
+
+if test ! -f $OPT ; then
+	#sed s/^#// Makefile > $OPT
+	touch $OPT
+	vi $OPT
+fi
+cmake -DCMAKE_INSTALL_PREFIX=$PREFIX `grep -v ^# $OPT` $SRC
 make
 
 $CIS/install-$CIS_INSTALL

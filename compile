@@ -80,7 +80,10 @@ fi
 if test -z ${FFLAGS+x} ; then
 	FFLAGS=
 fi
-export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS FFLAGS
+if test -z ${MAKE_FLAGS+x} ; then
+	MAKE_FLAGS=
+fi
+export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS FFLAGS MAKE_FLAGS
 
 test ! -z ${BUILD_CPU+x}     || BUILD_CPU=`uname -m`
 test ! -z ${BUILD_COMPANY+x} || BUILD_COMPANY=puppy
