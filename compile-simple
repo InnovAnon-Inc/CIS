@@ -36,7 +36,7 @@ fi
 
 # see what config options there are
 #if test -f $SRC/configure ; then
-if test ! -z {CF+x} ; then
+if test ! -z ${CF+x} ; then
 	test -f $OPT.default || \
 	$CF --help | sed s/^/#/ | \
 	tee $OPT.default
