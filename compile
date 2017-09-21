@@ -218,7 +218,8 @@ test ! -z ${DO_STRIP_APPS+x} || DO_STRIP_APPS=1
 test ! -z ${DO_STRIP_LIBS+x} || DO_STRIP_LIBS=1
 test ! -z ${DO_PACK+x}       || DO_PACK=1
 test ! -z ${DO_ZMAN+x}       || DO_ZMAN=1
-export DO_SHC_APPS DO_STRIP_APPS DO_STRIP_LIBS DO_PACK DO_ZMAN
+test ! -z ${DO_TRYALL+x}     || DO_TRYALL=1
+export DO_SHC_APPS DO_STRIP_APPS DO_STRIP_LIBS DO_PACK DO_ZMAN DO_TRYALL
 
 test ! -z ${PREFIX+x} || PREFIX=/
 export PREFIX
@@ -247,7 +248,9 @@ while : ; do
 	export REV
 	if (
 		set -exo nounset
-		export AUTOGEN=tryall
+		if test x$DO_TRYALL != x0 ; then
+			export AUTOGEN=tryall
+		fi
 		cd $REPO
 
 		$CIS/${SCM}_reset
