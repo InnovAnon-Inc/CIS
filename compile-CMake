@@ -9,7 +9,7 @@ fi
 #	make distclean || make clean
 #fi
 
-$CIS/autogen-$AUTOGEN
+#$CIS/autogen-$AUTOGEN
 
 # TODO make a proper source release
 if test x$SRC != x$REPO ; then
@@ -59,6 +59,7 @@ if test ! -f $OPT ; then
 	vi $OPT
 fi
 #cmake -DCMAKE_INSTALL_PREFIX=$PREFIX `grep -v ^# $OPT` $SRC
+$SRC/bootstrap --prefix=$PREFIX `grep -v ^# $OPT`
 make
 
 $CIS/install-$CIS_INSTALL
