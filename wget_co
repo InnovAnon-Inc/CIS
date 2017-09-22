@@ -7,4 +7,4 @@ $SCM --continue -O $REPO$EXT $URL
 # TODO untar to $SRC
 rm -fr $REPO
 mkdir  $REPO
-tar xf $REPO$EXT -C $REPO
+tar xf $REPO$EXT -C $REPO --strip-components=1
