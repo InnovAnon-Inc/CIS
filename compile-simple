@@ -60,7 +60,7 @@ else
 		sed s/^#// $MF > $OPT
 		vi $OPT
 	fi
-	make -f $MF PREFIX=$PREFIX `grep -v ^# $OPT`
+	make -f $MF -DPREFIX=$PREFIX `grep -v ^# $OPT`
 fi
 
 $CIS/install-$CIS_INSTALL
