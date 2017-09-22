@@ -10,7 +10,7 @@ for k in "$EXEC" $DATA ; do
 done
 
 TEST_PATH=
-for k in $PREFIX/{usr/{local/,},}{s,}bin ; do
+for k in $DIR/{usr/{local/,},}{s,}bin ; do
 	test -d $DIR/$k || continue
 	TEST_PATH=$DIR/$k:$TEST_PATH
 done
