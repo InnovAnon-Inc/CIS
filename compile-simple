@@ -2,11 +2,15 @@
 set -exo nounset
 
 if test -f Makefile || test -f makefile ; then
-	make distclean || make clean
+	make maintainer-clean || \
+	make distclean || \
+	make clean
 fi
 if test -f configure ; then
 	./configure
-	make distclean || make clean
+	make maintainer-clean || \
+	make distclean || \
+	make clean
 fi
 
 $CIS/autogen-$AUTOGEN
@@ -61,7 +65,7 @@ else
 		vi $OPT
 	fi
 	PREFIX=$PREFIX \
-	make -f $MF INSTALLROOT=$PREFIX PREFIX=$PREFIX `grep -v ^# $OPT`
+	make -f $MF PREFIX=$PREFIX `grep -v ^# $OPT`
 fi
 
 $CIS/install-$CIS_INSTALL
