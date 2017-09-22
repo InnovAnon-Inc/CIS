@@ -61,7 +61,7 @@ else
 		vi $OPT
 	fi
 	PREFIX=$PREFIX \
-	make -f $MF PREFIX=$PREFIX `grep -v ^# $OPT`
+	make -f $MF INSTALLROOT=$PREFIX PREFIX=$PREFIX `grep -v ^# $OPT`
 fi
 
 $CIS/install-$CIS_INSTALL
