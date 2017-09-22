@@ -4,5 +4,7 @@ set -exo nounset
 test x$URL != x
 
 $SCM --continue -O $REPO$EXT $URL
+# TODO untar to $SRC
 rm -fr $REPO
+mkdir  $REPO
 tar xf $REPO$EXT -C $REPO
