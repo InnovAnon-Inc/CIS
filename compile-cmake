@@ -4,13 +4,13 @@ set -exo nounset
 if test -f Makefile || test -f makefile ; then
 	make maintainer-clean || \
 	make distclean || \
-	make clean
+	make clean || :
 fi
 #if test -f configure ; then
 #	./configure
 #	make maintainer-clean || \
-	make distclean || \
-	make clean
+#	make distclean || \
+#	make clean || :
 #fi
 
 #$CIS/autogen-$AUTOGEN

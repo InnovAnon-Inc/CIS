@@ -2,7 +2,9 @@
 set -exo nounset
 
 if test -f Makefile || test -f makefile ; then
-	make distclean || make clean
+	make maintainer-clean || \
+	make distclean || \
+	make clean || :
 fi
 #if test -f configure ; then
 #	./configure

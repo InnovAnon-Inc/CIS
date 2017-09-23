@@ -11,8 +11,9 @@ if test x$SRC != x$REPO ; then
 fi
 
 (test ! -f Makefile && test ! -f makefile) || \
+make maintainer-clean || \
 make distclean || \
-make clean
+make clean || :
 #test ! -f configure || (./configure && make distclean)
 
 if test x$BLD != x$SRC ; then
