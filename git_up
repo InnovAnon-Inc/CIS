@@ -2,3 +2,7 @@
 set -exo nounset
 
 $SCM checkout HEAD~$REV
+
+
+
+$SCM submodule update --init --recursive
