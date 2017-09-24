@@ -2,8 +2,8 @@
 set -exo nounset
 
 rm $V -rf $INST
-mkdir $V -p $INST
-ln -s $BLD/gnulib-tool $INST/$PREFIX/gnulib-tool
+mkdir $V -p $INST/$PREFIX/bin
+ln -s $BLD/gnulib-tool $INST/$PREFIX/bin/gnulib-tool
 #test -d $INST || continue
 pushd $INST
 tar ${V}acpf $PKG.txz -C $INST .
