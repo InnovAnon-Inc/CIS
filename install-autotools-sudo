@@ -1,7 +1,7 @@
 #! /bin/bash
 set -exo nounset
 
-rm $V -rf $INST{,-data}
+sudo rm $V -rf $INST{,-data}
 sudo make DESTDIR=$INST      install-exec
 sudo make DESTDIR=$INST-data install-data
 for k in '' -data ; do
