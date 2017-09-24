@@ -1,0 +1,14 @@
+#! /bin/bash
+set -exo nounset
+
+if test -f Makefile || test -f makefile ; then
+	make distclean || :
+	make clean || :
+	make maintainer-clean || :
+fi
+if test -f configure ; then
+	./configure
+	make distclean || :
+	make clean || :
+	make maintainer-clean || :
+fi
