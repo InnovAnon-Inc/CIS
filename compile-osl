@@ -2,14 +2,14 @@
 set -exo nounset
 
 if test -f Makefile || test -f makefile ; then
-	make maintaner-clean || \
-	make distclean || \
+	make maintaner-clean || :
+	make distclean || :
 	make clean || :
 fi
 if test -f configure ; then
 	./configure
-	make maintainer-clean || \
-	make distclean || \
+	make maintainer-clean || :
+	make distclean || :
 	make clean || :
 fi
 

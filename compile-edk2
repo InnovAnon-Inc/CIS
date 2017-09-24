@@ -4,14 +4,14 @@ set -exo nounset
 cd $PROJECT
 
 if test -f Makefile || test -f makefile ; then
-	make maintainer-clean || \
-	make distclean || \
+	make maintainer-clean || :
+	make distclean || :
 	make clean || :
 fi
 if test -f configure ; then
 	./configure
-	make maintainer-clean || \
-	make distclean || \
+	make maintainer-clean || :
+	make distclean || :
 	make clean || :
 fi
 
