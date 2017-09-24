@@ -1,6 +1,6 @@
 #! /bin/bash
 set -exo nounset
 
-sed '/2\.69/d' $REPO/configure.in
+sed -i '/2\.69/d' $REPO/configure.in
 
 $CIS/compile-autotools
