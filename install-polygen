@@ -1,0 +1,10 @@
+#! /bin/bash
+set -exo nounset
+
+rm $V -rf $INST
+mkdir $V -p $INST/$PREFIX/bin
+ln -s $BLD/src/$PROJECT $INST/$PREFIX/bin/
+#test -d $INST || continue
+pushd $INST
+tar ${V}acpf $PKG.txz -C $INST .
+popd
