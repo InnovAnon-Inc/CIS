@@ -1,17 +1,18 @@
+# CIS
+C(ontinuous) I(ntegration) S(ystem)
+==========
 This is intended to become a continuous integration system, allowing
 bleeding-edge source packages to be installed automatically. For now, it barely
 compiles things.
 
-=====
-
+----------
 CHECKOUT:
 
 git clone git://github.com/InnovAnon-INC/CIS.git
 
 cd CIS
 
------
-
+----------
 INSTALL:
 
 make clean # if this isn't a fresh checkout
@@ -20,8 +21,7 @@ make
 
 make install
 
-=====
-
+==========
 USE:
 
 (re-install self:)
@@ -42,8 +42,7 @@ EOF
 
 DEV=home compile CIS
 
------
-
+----------
 (compile librestart:)
 
 cat > /mnt/home/cnfs/restart << "EOF"
@@ -56,8 +55,7 @@ EOF
 
 DEV=home compile restart
 
-=====
-
+==========
 BUGS
 
 (currently being discovered ;))
