@@ -1,14 +1,20 @@
 #! /bin/bash
 set -exo nounset
 
+SUCCESS=0
+
 for k in -{pack,strip} '' ; do
 	test -f $PKG$k.txz || continue
 	tar ${V}xpf $PKG$k.txz -C $HOME
+	SUCCESS=1
 	break
 done
 
 for k in -{zman,data} ; do
 	test -f $PKG$k.txz || continue
 	tar ${V}xpf $PKG$k.txz -C $HOME
+	SUCCESS=1
 	break
 done
+
+test $SUCCESS -eq 1
