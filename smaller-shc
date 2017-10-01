@@ -17,4 +17,5 @@ done
 pushd $INST-shc
 tar ${V}acpf $PKG-shc.txz -C $INST-shc .
 popd
+gpg --yes --detach-sig $PKG-shc.txz
 EXEC=-shc DATA=-data $CIS/test

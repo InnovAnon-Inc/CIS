@@ -19,4 +19,5 @@ done
 pushd $INST-strip
 tar ${V}acpf $PKG-strip.txz -C $INST-strip .
 popd
+gpg --yes --detach-sig $PKG-strip.txz
 EXEC=-strip DATA=-data $CIS/test

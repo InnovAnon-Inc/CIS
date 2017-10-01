@@ -15,5 +15,6 @@ if test -d $INST-data ; then
 	pushd $INST-zman
 	tar ${V}acpf $PKG-zman.txz -C $INST-zman .
 	popd
+	gpg --yes --detach-sig $PKG-zman.txz
 	EXEC=-pack DATA=-data $CIS/test
 fi

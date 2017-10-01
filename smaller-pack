@@ -12,4 +12,5 @@ done
 pushd $INST-pack
 tar ${V}acpf $PKG-pack.txz -C $INST-pack .
 popd
+gpg --yes --detach-sig $PKG-pack.txz
 EXEC=-pack DATA=-data $CIS/test

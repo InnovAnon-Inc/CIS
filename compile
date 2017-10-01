@@ -269,6 +269,7 @@ for k in '' -data ; do
 	pushd $INST$k
 	tar ${V}acpf $PKG$k.txz -C $INST$k .
 	popd
+	gpg --yes --detach-sig $PKG$k.txz
 done
 EXEC= DATA=-data $CIS/test
 
@@ -277,6 +278,12 @@ for k in shc strip pack zman ; do
 	# TODO "|| :" ==> scares me
 	$CIS/smaller-$k || :
 done
+
+pushd $PKGS
+git add .
+git commit -S -m 'Automatic commit by CIS'
+git push origin master
+popd
 
 #$CIS/host-install
 $CIS/host-install-$HOST_INSTALL
