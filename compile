@@ -280,9 +280,9 @@ for k in shc strip pack zman ; do
 done
 
 pushd $PKGS
-git add .
-git commit -S -m 'Automatic commit by CIS'
-git push origin master
+sudo git add .
+sudo git commit -S -m 'Automatic commit by CIS'
+sudo git push origin master
 popd
 
 #$CIS/host-install
