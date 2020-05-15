@@ -13,7 +13,7 @@ all: $(SRCS:=.x) unpack.txz
 unpack.txz: $(SRCS:=.x)
 	V=$V ./pack `readlink -f .`/$@
 %.x: %
-	shc $V -i -cex -U -f $^
+	shc $V -i -cex -f $^
 	strip --strip-all $@
 	test ! `command -v upx-ucl` || \
 	upx-ucl --all-filters --ultra-brute $@
