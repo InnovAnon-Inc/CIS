@@ -2,3 +2,4 @@
 set -exo nounset
 
 # TODO
+echo TODO

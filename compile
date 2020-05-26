@@ -1,12 +1,15 @@
 #! /bin/bash
 set -exo nounset
 
-test ! -z ${CIS+x} || CIS=`dirname $(readlink -f $0)`
-export CIS
+#test "${CIS+x} || CIS=`dirname $(readlink -f $0)`
+#export CIS
+CISBIN="`readlink -f "$0"`"
+SUFFIX="${CISBIN##*.}"
+export SUFFIX="${SUFFIX:+.$SUFFIX}"
+export CIS="${CIS:-"`dirname "$CISBIN"`"}"
 
-test $# -eq 1
-PROJECT=$1
-export PROJECT
+(( $# == 1 ))
+export PROJECT=$1
 
 #test ! -z ${DEV+x} || DEV=$DEV
 #test ! -z ${DEV+x} || DEV=cis
@@ -19,83 +22,128 @@ if test -z ${DEV+x} ; then
 fi
 export DEV
 
-test ! -z ${REPOS+x} || REPOS=/mnt/$DEV/repos
-test ! -z ${SRCS+x}  || SRCS=/mnt/$DEV/sources
-test ! -z ${BLDS+x}  || BLDS=/mnt/$DEV/build
-test ! -z ${INSTS+x} || INSTS=/mnt/$DEV/installs
-test ! -z ${PKGS+x}  || PKGS=/mnt/$DEV/pkgs
-test ! -z ${CNFS+x}  || CNFS=/mnt/$DEV/cnfs
-test ! -z ${OPTS+x}  || OPTS=/mnt/$DEV/opts
-test ! -z ${OUTS+x}  || OUTS=/mnt/$DEV/outs
-export REPOS SRCS BLDS INSTS PKGS CNFS OPTS OUTS
+#test ! -z ${REPOS+x} || REPOS=/mnt/$DEV/repos
+#test ! -z ${SRCS+x}  || SRCS=/mnt/$DEV/sources
+#test ! -z ${BLDS+x}  || BLDS=/mnt/$DEV/build
+#test ! -z ${INSTS+x} || INSTS=/mnt/$DEV/installs
+#test ! -z ${PKGS+x}  || PKGS=/mnt/$DEV/pkgs
+#test ! -z ${CNFS+x}  || CNFS=/mnt/$DEV/cnfs
+#test ! -z ${OPTS+x}  || OPTS=/mnt/$DEV/opts
+#test ! -z ${OUTS+x}  || OUTS=/mnt/$DEV/outs
+#export REPOS SRCS BLDS INSTS PKGS CNFS OPTS OUTS
+array=(SRCS sources BLDS build INSTS installs)
+while (( ${#array[@]} )) ; do
+  var=${array[0]}
+  dir=${array[1]}
+  array=(${array[@]:2})
+  eval export $var=${!var:-/mnt/$DEV/$dir}
+done
+for var in REPOS PKGS CNFS OPTS OUTS ; do
+  eval export $var=${!var:-/mnt/$DEV/${var,,}}
+done
 
-test ! -z ${V+x} || V=-v
-export V
+#test ! -z ${V+x} || V=-v
+#export V
+export V=${V:--v}
 
 for k in $REPOS $SRCS $BLDS $INSTS $PKGS $CNFS $OPTS $OUTS ; do
 	test -d $k || mkdir $V -p $k
 done
 
-test ! -z ${REPO+x} || REPO=$REPOS/$PROJECT
-#test ! -z ${SRC+x}  || SRC=$SRCS/$PROJECT
-test ! -z ${BLD+x}  || BLD=$BLDS/$PROJECT
-test ! -z ${INST+x} || INST=$INSTS/$PROJECT
-test ! -z ${PKG+x}  || PKG=$PKGS/$PROJECT
-test ! -z ${CNF+x}  || CNF=$CNFS/$PROJECT
-test ! -z ${OPT+x}  || OPT=$OPTS/$PROJECT
-test ! -z ${OUT+x}  || OUT=$OUTS/$PROJECT
+#test ! -z ${REPO+x} || REPO=$REPOS/$PROJECT
+##test ! -z ${SRC+x}  || SRC=$SRCS/$PROJECT
+#test ! -z ${BLD+x}  || BLD=$BLDS/$PROJECT
+#test ! -z ${INST+x} || INST=$INSTS/$PROJECT
+#test ! -z ${PKG+x}  || PKG=$PKGS/$PROJECT
+#test ! -z ${CNF+x}  || CNF=$CNFS/$PROJECT
+#test ! -z ${OPT+x}  || OPT=$OPTS/$PROJECT
+#test ! -z ${OUT+x}  || OUT=$OUTS/$PROJECT
+#REPO="${REPO:-$REPOS/$PROJECT}"
+#SRC="${SRC:-$SRCS/$PROJECT}"
+#BLD="${BLD:-$BLDS/$PROJECT}"
+#INST="${INST:-$INSTS/$PROJECT}"
+#PKG="${PKG:-$PKGS/$PROJECT}"
+#CNF="${CNF:-$CNFS/$PROJECT}"
+#OPT="${OPT:-$OPTS/$PROJECT}"
+#OUT=${OUT:-$OUTS/$PROJECT}"
+for var in REPO SRC BLD INST PKG CNF OPT OUT ; do
+  VAR=${var}S
+  VAR=${!VAR}
+  eval $var=${!var:-$VAR/$PROJECT}
+done
 export CNF OUT
 
-test ! -z ${CIS_CC+x}     || CIS_CC=musl-gcc
-test ! -z ${CIS_CPP+x}    || CIS_CPP=
-test ! -z ${CIS_CXX+x}    || CIS_CXX=
-test ! -z ${CIS_STRIP+x}  || CIS_STRIP=strip
-test ! -z ${CIS_AR+x}     || CIS_AR=
-test ! -z ${CIS_RANLIB+x} || CIS_RANLIB=
-test ! -z ${CIS_AS+x}     || CIS_AS=
-test ! -z ${CIS_LD+x}     || CIS_LD=
-test ! -z ${CIS_NM+x}     || CIS_NM=
-export CIS_CC CIS_CPP CIS_CXX CIS_STRIP CIS_AR CIS_RANLIB CIS_AS CIS_LD CIS_NM
+#test ! -z ${CIS_CC+x}     || CIS_CC=musl-gcc
+#test ! -z ${CIS_CPP+x}    || CIS_CPP=
+#test ! -z ${CIS_CXX+x}    || CIS_CXX=
+#test ! -z ${CIS_STRIP+x}  || CIS_STRIP=strip
+#test ! -z ${CIS_AR+x}     || CIS_AR=
+#test ! -z ${CIS_RANLIB+x} || CIS_RANLIB=
+#test ! -z ${CIS_AS+x}     || CIS_AS=
+#test ! -z ${CIS_LD+x}     || CIS_LD=
+#test ! -z ${CIS_NM+x}     || CIS_NM=
+#export CIS_CC CIS_CPP CIS_CXX CIS_STRIP CIS_AR CIS_RANLIB CIS_AS CIS_LD CIS_NM
+export CIS_CC=${CIS_CC:-musl-gcc}
+export CIS_CPP=${CIS_CPP:-}
+export CIS_CXX=${CIS_CXX:-}
+export CIS_STRIP=${CIS_STRIP:-strip}
+export CIS_ARR=${CIS_ARR:-}
+export CIS_RANLIB=${CIS_RANLIB:-}
+export CIS_AS=${CIS_AS:-}
+export CIS_LD=${CIS_LD:-}
+export CIS_NM=${CIS_NM:-}
 
-if test -z ${CFLAGS+x} ; then
-	CFLAGS=
-	#CFLAGS="$CFLAGS -march=native"
-	#CFLAGS="$CFLAGS -g0"
-	#CFLAGS="$CFLAGS -O2"
-	#CFLAGS="$CFLAGS -pipe"
-	#CFLAGS="$CFLAGS -fmerge-all-constants"
-	#CFLAGS="$CFLAGS -fomit-frame-pointer"
-fi
-if test -z ${CPPFLAGS+x} ; then
-	CPPFLAGS=
-	CPPFLAGS="$CPPFLAGS $CFLAGS"
-fi
-if test -z ${CXXFLAGS+x} ; then
-	CXXFLAGS=
-	CXXFLAGS="$CFLAGS $CXXFLAGS"
-fi
-if test -z ${LDFLAGS+x} ; then
-	LDFLAGS=
-fi
-if test -z ${FFLAGS+x} ; then
-	FFLAGS=
-fi
-if test -z ${MAKE_FLAGS+x} ; then
-	MAKE_FLAGS=
-fi
-export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS FFLAGS MAKE_FLAGS
+export CFLAGS=${CFLAGS:-}
+export CPPFLAGS=${CPPFLAGS:-$CFLAGS}
+export CXXFLAGs=${CXXFLAGS:-$CFLAGS}
+export LDFLAGS=${LDFLAGS:-}
+export FFLAGS=${FFLAGS:-}
+export MAKEFLAGS=${MAKEFLAGS:-}
+#if test -z ${CFLAGS+x} ; then
+#	CFLAGS=
+#	#CFLAGS="$CFLAGS -march=native"
+#	#CFLAGS="$CFLAGS -g0"
+#	#CFLAGS="$CFLAGS -O2"
+#	#CFLAGS="$CFLAGS -pipe"
+#	#CFLAGS="$CFLAGS -fmerge-all-constants"
+#	#CFLAGS="$CFLAGS -fomit-frame-pointer"
+#fi
+#if test -z ${CPPFLAGS+x} ; then
+#	CPPFLAGS=
+#	CPPFLAGS="$CPPFLAGS $CFLAGS"
+#fi
+#if test -z ${CXXFLAGS+x} ; then
+#	CXXFLAGS=
+#	CXXFLAGS="$CFLAGS $CXXFLAGS"
+#fi
+#if test -z ${LDFLAGS+x} ; then
+#	LDFLAGS=
+#fi
+#if test -z ${FFLAGS+x} ; then
+#	FFLAGS=
+#fi
+#if test -z ${MAKE_FLAGS+x} ; then
+#	MAKE_FLAGS=
+#fi
+#export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS FFLAGS MAKE_FLAGS
 
-test ! -z ${BUILD_CPU+x}     || BUILD_CPU=`uname -m`
-test ! -z ${BUILD_COMPANY+x} || BUILD_COMPANY=puppy
-test ! -z ${BUILD_KERNEL+x}  || BUILD_KERNEL=linux
-test ! -z ${BUILD_OS+x}      || BUILD_OS=gnu
-test ! -z ${BUILD_SYSTEM+x}  || \
-BUILD_SYSTEM=$BUILD_KERNEL-$BUILD_OS
-test ! -z ${BUILD_TYPE+x}    || \
-BUILD_TYPE=$BUILD_CPU-$BUILD_COMPANY-$BUILD_SYSTEM
+export BUILD_CPU=${BUILD_CPU:-`uname -m`}
+export BUILD_COMPANY=${BUILD_COMPANY:-puppy}
+export BUILD_KERNEL=${BUILD_KERNEL:-linux}
+export BUILD_OS=${BUILD_OS:-gnu}
+export BUILD_SYSTEM=${BUILD_SYSTEM:-$BUILD_KERNEL-$BUILD_OS}
+export BUILD_TYPE=${BUILD_TYPE:-$BUILD_CPU-$BUILD_COMPANY-$BUILD_SYSTEM}
+#test ! -z ${BUILD_CPU+x}     || BUILD_CPU=`uname -m`
+#test ! -z ${BUILD_COMPANY+x} || BUILD_COMPANY=puppy
+#test ! -z ${BUILD_KERNEL+x}  || BUILD_KERNEL=linux
+#test ! -z ${BUILD_OS+x}      || BUILD_OS=gnu
+#test ! -z ${BUILD_SYSTEM+x}  || \
+#BUILD_SYSTEM=$BUILD_KERNEL-$BUILD_OS
+#test ! -z ${BUILD_TYPE+x}    || \
+#BUILD_TYPE=$BUILD_CPU-$BUILD_COMPANY-$BUILD_SYSTEM
 
-export BUILD_CPU BUILD_COMPANY BUILD_KERNEL BUILD_OS
-export BUILD_SYSTEM BUILD_TYPE
+#export BUILD_CPU BUILD_COMPANY BUILD_KERNEL BUILD_OS
+#export BUILD_SYSTEM BUILD_TYPE
 
 #HOST_CPU=x86_64
 #HOST_COMPANY=innovanon
@@ -104,67 +152,78 @@ export BUILD_SYSTEM BUILD_TYPE
 #HOST_SYSTEM=$HOST_KERNEL-$HOST_OS
 #HOST_TYPE=$HOST_CPU-$HOST_COMPANY-$HOST_SYSTEM
 
-test ! -z ${HOST_CPU+x}     || HOST_CPU=$BUILD_CPU
-test ! -z ${HOST_COMPANY+x} || HOST_COMPANY=$BUILD_COMPANY
-test ! -z ${HOST_KERNEL+x}  || HOST_KERNEL=$BUILD_KERNEL
-test ! -z ${HOST_OS+x}      || HOST_OS=$BUILD_OS
-#test ! -z ${HOST_SYSTEM+x}  || HOST_SYSTEM=$BUILD_SYSTEM
-if test -z ${HOST_SYSTEM+x} ; then
-	if test $HOST_CPU     == $BUILD_CPU \
-	&& test $HOST_COMPANY == $BUILD_COMPANY \
-	&& test $HOST_KERNEL  == $BUILD_KERNEL \
-	&& test $HOST_OS      == $BUILD_OS ; then
+for var in CPU COMPANY KERNEL OS ; do
+  HV=HOST_$var
+
+  BV=BUILD_$var
+  #eval $BV=${!BV}
+  eval export $HV=${!HV:-${!BV}}
+
+  TV=TARGET_$var
+  #eval $TV=${!TV}
+  eval export $TV=${!TV:-${!HV}}
+done
+#test ! -z ${HOST_CPU+x}     || HOST_CPU=$BUILD_CPU
+#test ! -z ${HOST_COMPANY+x} || HOST_COMPANY=$BUILD_COMPANY
+#test ! -z ${HOST_KERNEL+x}  || HOST_KERNEL=$BUILD_KERNEL
+#test ! -z ${HOST_OS+x}      || HOST_OS=$BUILD_OS
+##test ! -z ${HOST_SYSTEM+x}  || HOST_SYSTEM=$BUILD_SYSTEM
+if [[ -z ${HOST_SYSTEM+x} ]] ; then
+	if [[ $HOST_CPU     = $BUILD_CPU ]] \
+	&& [[ $HOST_COMPANY = $BUILD_COMPANY ]] \
+	&& [[ $HOST_KERNEL  = $BUILD_KERNEL ]] \
+	&& [[ $HOST_OS      = $BUILD_OS ]] ; then
 		HOST_SYSTEM=$BUILD_SYSTEM
 	else
 		HOST_SYSTEM=$HOST_KERNEL-$HOST_OS
 	fi
 fi
-#test ! -z ${HOST_TYPE+x}    || HOST_TYPE=$BUILD_TYPE
-if test -z ${HOST_TYPE+x} ; then
-	if test $HOST_CPU     == $BUILD_CPU \
-	&& test $HOST_COMPANY == $BUILD_COMPANY \
-	&& test $HOST_KERNEL  == $BUILD_KERNEL \
-	&& test $HOST_OS      == $BUILD_OS ; then
+##test ! -z ${HOST_TYPE+x}    || HOST_TYPE=$BUILD_TYPE
+if [[ -z ${HOST_TYPE+x} ]] ; then
+	if [[ $HOST_CPU     = $BUILD_CPU ]] \
+	&& [[ $HOST_COMPANY = $BUILD_COMPANY ]] \
+	&& [[ $HOST_KERNEL  = $BUILD_KERNEL ]] \
+	&& [[ $HOST_OS      = $BUILD_OS ]] ; then
 		HOST_TYPE=$BUILD_TYPE
 	else
 		HOST_TYPE=$HOST_CPU-$HOST_COMPANY-$HOST_SYSTEM
 	fi
 fi
 
-export HOST_CPU HOST_COMPANY HOST_KERNEL HOST_OS
+#export HOST_CPU HOST_COMPANY HOST_KERNEL HOST_OS
 export HOST_SYSTEM HOST_TYPE
 
-test ! -z ${TARGET_CPU+x}     || TARGET_CPU=$HOST_CPU
-test ! -z ${TARGET_COMPANY+x} || TARGET_COMPANY=$HOST_COMPANY
-test ! -z ${TARGET_KERNEL+x}  || TARGET_KERNEL=$HOST_KERNEL
-test ! -z ${TARGET_OS+x}      || TARGET_OS=$HOST_OS
-#test ! -z ${TARGET_SYSTEM+x}  || TARGET_SYSTEM=$HOST_SYSTEM
-if test -z ${TARGET_SYSTEM+x} ; then
-	if test $TARGET_CPU     == $HOST_CPU \
-	&& test $TARGET_COMPANY == $HOST_COMPANY \
-	&& test $TARGET_KERNEL  == $HOST_KERNEL \
-	&& test $TARGET_OS      == $HOST_OS ; then
+#test ! -z ${TARGET_CPU+x}     || TARGET_CPU=$HOST_CPU
+#test ! -z ${TARGET_COMPANY+x} || TARGET_COMPANY=$HOST_COMPANY
+#test ! -z ${TARGET_KERNEL+x}  || TARGET_KERNEL=$HOST_KERNEL
+#test ! -z ${TARGET_OS+x}      || TARGET_OS=$HOST_OS
+##test ! -z ${TARGET_SYSTEM+x}  || TARGET_SYSTEM=$HOST_SYSTEM
+if [[ -z ${TARGET_SYSTEM+x} ]] ; then
+	if [[ $TARGET_CPU     = $HOST_CPU ]] \
+	&& [[ $TARGET_COMPANY = $HOST_COMPANY ]] \
+	&& [[ $TARGET_KERNEL  = $HOST_KERNEL ]] \
+	&& [[ $TARGET_OS      = $HOST_OS ]] ; then
 		TARGET_SYSTEM=$HOST_SYSTEM
 	else
 		TARGET_SYSTEM=$TARGET_KERNEL-$TARGET_OS
 	fi
 fi
-#test ! -z ${TARGET_TYPE+x}    || TARGET_TYPE=$HOST_TYPE
-if test -z ${TARGET_TYPE+x} ; then
-	if test $TARGET_CPU     == $HOST_CPU \
-	&& test $TARGET_COMPANY == $HOST_COMPANY \
-	&& test $TARGET_KERNEL  == $HOST_KERNEL \
-	&& test $TARGET_OS      == $HOST_OS ; then
+##test ! -z ${TARGET_TYPE+x}    || TARGET_TYPE=$HOST_TYPE
+if [[ -z ${TARGET_TYPE+x} ]] ; then
+	if [[ $TARGET_CPU     = $HOST_CPU ]] \
+	&& [[ $TARGET_COMPANY = $HOST_COMPANY ]] \
+	&& [[ $TARGET_KERNEL  = $HOST_KERNEL ]] \
+	&& [[ $TARGET_OS      = $HOST_OS ]] ; then
 		TARGET_TYPE=$HOST_TYPE
 	else
 		TARGET_TYPE=$TARGET_CPU-$TARGET_COMPANY-$TARGET_SYSTEM
 	fi
 fi
 
-export TARGET_CPU TARGET_COMPANY TARGET_KERNEL TARGET_OS
+#export TARGET_CPU TARGET_COMPANY TARGET_KERNEL TARGET_OS
 export TARGET_SYSTEM TARGET_TYPE
 
-if test "x$TARGET_TYPE" != "x$HOST_TYPE" ; then
+if [[ "x$TARGET_TYPE" != "x$HOST_TYPE" ]] ; then
 	CIS_CC=$TARGET_TYPE-gcc
 	CIS_CPP=$TARGET_TYPE-cpp
 	CIS_CXX=$TARGET_TYPE-g++
@@ -205,40 +264,56 @@ else
 	export CONFIGURE_ENV=
 fi
 
-test ! -z ${SRC+x}     || SRC=$REPO
-test ! -z ${SCM+x}     || SCM=git
-test ! -z ${AUTOGEN+x} || AUTOGEN=tryall
-test ! -z ${TEST+x}    || TEST=standard
-test ! -z ${COMPILE+x} || COMPILE=simple
-test ! -z ${CIS_INSTALL+x} || CIS_INSTALL=autotools
-test ! -z ${HOST_INSTALL+x} || HOST_INSTALL=rootfs
+export SRC=${SRC:-$REPO}
+export SCM=${SCM:-git}
+export AUTOGEN=${AUTOGEN:-tryall}
+export TEST=${TEST:-standard}
+export COMPILE=${COMPILE:-simple}
+export CIS_INSTALL=${CIS_INSTALL:-autotools}
+export HOST_INSTALL=${HOST_INSTALL:-rootfs}
+#test ! -z ${SRC+x}     || SRC=$REPO
+#test ! -z ${SCM+x}     || SCM=git
+#test ! -z ${AUTOGEN+x} || AUTOGEN=tryall
+#test ! -z ${TEST+x}    || TEST=standard
+#test ! -z ${COMPILE+x} || COMPILE=simple
+#test ! -z ${CIS_INSTALL+x} || CIS_INSTALL=autotools
+#test ! -z ${HOST_INSTALL+x} || HOST_INSTALL=rootfs
 
-test ! -z ${DO_SHC_APPS+x}   || DO_SHC_APPS=1
-test ! -z ${DO_STRIP_APPS+x} || DO_STRIP_APPS=1
-test ! -z ${DO_STRIP_LIBS+x} || DO_STRIP_LIBS=1
-test ! -z ${DO_PACK+x}       || DO_PACK=1
-test ! -z ${DO_ZMAN+x}       || DO_ZMAN=1
-test ! -z ${DO_TRYALL+x}     || DO_TRYALL=1
-export DO_SHC_APPS DO_STRIP_APPS DO_STRIP_LIBS DO_PACK DO_ZMAN DO_TRYALL
+for var in SHC_APPS STRIP_APPS STRIP_LIBS PACK ZMAN TRYALL ; do
+  VAR=DO_$var
+  eval export $VAR=${!VAR:-1}
+done
 
-test ! -z ${PREFIX+x} || PREFIX=/
-export PREFIX
-test ! -z ${CIS_PREFIX+x} || CIS_PREFIX=$PREFIX
-export CIS_PREFIX
+#test ! -z ${DO_SHC_APPS+x}   || DO_SHC_APPS=1
+#test ! -z ${DO_STRIP_APPS+x} || DO_STRIP_APPS=1
+#test ! -z ${DO_STRIP_LIBS+x} || DO_STRIP_LIBS=1
+#test ! -z ${DO_PACK+x}       || DO_PACK=1
+#test ! -z ${DO_ZMAN+x}       || DO_ZMAN=1
+#test ! -z ${DO_TRYALL+x}     || DO_TRYALL=1
+#export DO_SHC_APPS DO_STRIP_APPS DO_STRIP_LIBS DO_PACK DO_ZMAN DO_TRYALL
 
-test ! -z ${EXT+x} || EXT=.tar.xz
-export EXT
+export PREFIX=${PREFIX:-/}
+export CIS_PREFIX=${CIS_PREFIX:-$PREFIX}
+#test ! -z ${PREFIX+x} || PREFIX=/
+#export PREFIX
+#test ! -z ${CIS_PREFIX+x} || CIS_PREFIX=$PREFIX
+#export CIS_PREFIX
+
+export EXT=${EXT:-.tar.xz}
+#test ! -z ${EXT+x} || EXT=.tar.xz
+#export EXT
 
 (
 test ! -f $CNF || . $CNF
 export REPO SRC BLD INST PKG OPT
-test ! -z ${URL+x} || URL=$SCM://github.com/InnovAnon-Inc/$PROJECT.$SCM
-export SCM AUTOGEN TEST URL COMPILE CIS_INSTALL
+export URL=${URL:-$SCM://github.com/InnovAnon-Inc/$PROJECT.$SCM}
+#test ! -z ${URL+x} || URL=$SCM://github.com/InnovAnon-Inc/$PROJECT.$SCM
+#export SCM AUTOGEN TEST URL COMPILE CIS_INSTALL
 
 if test ! -d $REPO ; then
-	$CIS/${SCM}_co
+	$CIS/${SCM}_co$SUFFIX
 else
-	$CIS/${SCM}_cnf
+	$CIS/${SCM}_cnf$SUFFIX
 fi
 #test -d $REPO || $CIS/${SCM}_co
 
@@ -248,35 +323,37 @@ while : ; do
 	export REV
 	if (
 		set -exo nounset
-		if test x$DO_TRYALL != x0 ; then
+		if (($DO_TRYALL != 0)) ; then
 			export AUTOGEN=tryall
 		fi
 		cd $REPO
 
-		$CIS/${SCM}_reset
-		$CIS/${SCM}_up
+		$CIS/${SCM}_reset$SUFFIX
+		$CIS/${SCM}_up$SUFFIX
 
-		$CIS/compile-$COMPILE
+		$CIS/compile-$COMPILE$SUFFIX
 	) ; then break
 	else
-		REV=`expr $REV + 1`
-		test $REV -le $MAX_REV
+		#REV=`expr $REV + 1`
+		((++REV))
+		#test $REV -le $MAX_REV
+		(($REV <= $MAX_REV))
 	fi
 done
 
 for k in '' -data ; do
-	test -d $INST$k || continue
+	[[ -d $INST$k ]] || continue
 	pushd $INST$k
 	tar ${V}acpf $PKG$k.txz -C $INST$k .
 	popd
 	gpg --yes --detach-sig $PKG$k.txz
 done
-EXEC= DATA=-data $CIS/test
+EXEC= DATA=-data $CIS/test$SUFFIX
 
 # order matters
 for k in shc strip pack zman ; do
 	# TODO "|| :" ==> scares me
-	$CIS/smaller-$k || :
+	$CIS/smaller-$k$SUFFIX || :
 done
 
 pushd $PKGS
@@ -286,5 +363,5 @@ git push origin master
 popd
 
 #$CIS/host-install
-$CIS/host-install-$HOST_INSTALL
+$CIS/host-install-$HOST_INSTALL$SUFFIX
 ) |& tee $OUT
