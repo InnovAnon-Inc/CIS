@@ -1,18 +1,19 @@
 # CIS
 C(ontinuous) I(ntegration) S(ystem)
 ==========
+
 This is intended to become a continuous integration system, allowing
 bleeding-edge source packages to be installed automatically. For now, it barely
 compiles things.
-
 ----------
+
 CHECKOUT:
 
 `git clone git://github.com/InnovAnon-INC/CIS.git`
 
 `cd CIS`
-
 ----------
+
 INSTALL:
 
 `make clean` # if this isn't a fresh checkout
@@ -20,8 +21,8 @@ INSTALL:
 `make`
 
 `make install`
-
 ==========
+
 USE:
 
 (re-install self:)
@@ -41,8 +42,8 @@ TEST=none
 EOF
 
 DEV=home compile CIS
-
 ----------
+
 (compile librestart:)
 
 cat > /mnt/home/cnfs/restart << "EOF"
@@ -54,15 +55,15 @@ TEST=none
 EOF
 
 DEV=home compile restart
-
 ==========
+
 BUGS
 
 oops I borked it. don't use this
 
 (currently being discovered ;))
-
 ----------
+
 [![CircleCI](https://img.shields.io/circleci/build/github/InnovAnon-Inc/CIS?color=%23FF1100&logo=InnovAnon%2C%20Inc.&logoColor=%23FF1133&style=plastic)](https://circleci.com/gh/InnovAnon-Inc/CIS)
 [![Repo Size](https://img.shields.io/github/repo-size/InnovAnon-Inc/CIS?color=%23FF1100&logo=InnovAnon%2C%20Inc.&logoColor=%23FF1133&style=plastic)](https://github.com/InnovAnon-Inc/CIS)
 [![LoC](https://tokei.rs/b1/github/InnovAnon-Inc/CIS?category=code)](https://github.com/InnovAnon-Inc/CIS)
