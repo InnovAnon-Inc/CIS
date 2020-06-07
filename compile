@@ -8,7 +8,7 @@ SUFFIX="${CISBIN##*.}"
 export SUFFIX="${SUFFIX:+.$SUFFIX}"
 export CIS="${CIS:-"`dirname "$CISBIN"`"}"
 
-(( $# == 1 ))
+(( $# ))
 export PROJECT=$1
 
 #test ! -z ${DEV+x} || DEV=$DEV
